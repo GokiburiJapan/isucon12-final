@@ -16,15 +16,12 @@
   with_items:
     - etc/nginx/nginx.conf
     - etc/nginx/sites-available/isuconquest.conf
-    - etc/nginx/sites-available/isuconquest-php.conf
     - etc/mysql/conf.d/my.cnf
     - etc/systemd/system/isuconquest.go.service
     - etc/systemd/system/isuconquest.nodejs.service
-    - etc/systemd/system/isuconquest.php.service
     - etc/systemd/system/isuconquest.ruby.service
     - etc/systemd/system/isuconquest.rust.service
     - etc/systemd/system/isuconquest.perl.service
-    - home/isucon/local/php/etc/isuconquest.php-fpm.conf
 
 - name: Remove nginx default
   become: true
@@ -96,21 +93,6 @@
     clone: true
     force: true
     depth: 1
-
-- name: ext-apfd build
-  become: true
-  become_user: isucon
-  shell: |
-    cd /tmp/ext-apfd && /home/isucon/.x phpize && \
-    /home/isucon/.x ./configure --with-php-config=/home/isucon/local/php/bin/php-config && \
-    make && make install && echo "extension=apfd.so" >> /home/isucon/local/php/etc/php.ini
-
-- name: composer install for php application
-  become: true
-  become_user: isucon
-  shell:
-    cmd: /home/isucon/.x php composer.phar install
-    chdir: /home/isucon/webapp/php
 
 - name: npm install for node application
   become: true

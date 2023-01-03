@@ -67,23 +67,3 @@
   become_user: isucon
   shell:
     cmd: /home/isucon/.x gem install bundler -v '2.3.16' --no-doc
-
-- name: Install PHP
-  become: true
-  shell: |
-    /opt/xbuild/php-install 8.1.9 /home/isucon/local/php -- \
-    --with-pcre-regex --with-zlib --enable-fpm --enable-pdo --with-pear \
-    --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-openssl \
-    --with-pcre-regex --with-pcre-dir --with-libxml-dir --enable-opcache \
-    --enable-bcmath --with-bz2 --enable-calendar --enable-cli --enable-shmop \
-    --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-mbregex \
-    --enable-mbstring --enable-pcntl --enable-sockets --with-curl --enable-zip
-
-- name: Change owner of PHP
-  become: true
-  file:
-    path: /home/isucon/local/php
-    state: directory
-    owner: isucon
-    group: isucon
-    recurse: true
