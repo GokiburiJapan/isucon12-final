@@ -699,8 +699,7 @@ module Isuconquest
       db_transaction do
         # 直付与 => プレゼントに入れる
         presents = []
-
-        result.each do |v|
+        presents = result.map do |v|
           present_id = generate_id()
           present = UserPresent.new(
             id: present_id,
@@ -713,11 +712,16 @@ module Isuconquest
             created_at: request_at,
             updated_at: request_at,
           )
-          query = 'INSERT INTO user_presents(id, user_id, sent_at, item_type, item_id, amount, present_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-          db.xquery(query, present.id, present.user_id, present.sent_at, present.item_type, present.item_id, present.amount, present.present_message, present.created_at, present.updated_at)
-
-          presents.push(present)
         end
+
+        present_arr = presents.map do |present|
+          [present.id, present.user_id, present.sent_at, present.item_type, present.item_id, present.amount, present.present_message, present.created_at, present.updated_at]
+        end
+        query = "INSERT INTO user_presents(id, user_id, sent_at, item_type, item_id, amount, present_message, created_at, updated_at) VALUES #{Array.new(present_arr.size, '(?, ?, ?, ?, ?, ?, ?, ?, ?)').join(', ')}"
+        db.xquery(
+          query,
+          *present_arr.flatten,
+        )
 
         # isuconをへらす
         query = 'UPDATE users SET isu_coin=? WHERE id=?'
