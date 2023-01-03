@@ -14,20 +14,6 @@
     cmd: /usr/bin/sh -x /tmp/rustup-init.sh -y --no-modify-path --profile default --default-toolchain 1.63 -c rustfmt
     chdir: /home/isucon
 
-- name: Install Node.js
-  become: true
-  shell:
-    cmd: /opt/xbuild/node-install v18.7.0 /home/isucon/local/node
-
-- name: Change owner of Node.js
-  become: true
-  file:
-    path: /home/isucon/local/node
-    state: directory
-    owner: isucon
-    group: isucon
-    recurse: true
-
 - name: Install Ruby
   become: true
   shell:
