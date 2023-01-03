@@ -7,6 +7,7 @@ EnvironmentFile=/home/isucon/env
 
 User=isucon
 Group=isucon
+ExecStartPre=/home/isucon/local/ruby/bin/bundle install
 ExecStart=/home/isucon/.x /home/isucon/local/ruby/bin/bundle exec puma -e production -p 8080 -w 2
 
 Restart   = always
