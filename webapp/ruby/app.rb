@@ -340,24 +340,10 @@ module Isuconquest
         [obtain_coins, obtain_cards, obtain_items]
       end
 
+      # @return [Integer]
       def generate_id
-        db = Thread.current[:generate_id_db] ||= connect_db
-        update_error = nil
-        100.times do
-          begin
-            db.query('UPDATE id_generator SET id=LAST_INSERT_ID(id+1)')
-          rescue Mysql2::Error => e
-            if e.error_number == 1213
-              update_error = e
-              next
-            end
-            raise e
-          end
-
-          return db.last_id
-        end
-
-        raise "failed to generate id: #{update_error.inspect}"
+        uuid = generate_uuid
+        uuid.gsub('-', '').slice(0, 8).hex
       end
 
       def generate_uuid
