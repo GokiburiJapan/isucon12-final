@@ -21,7 +21,6 @@
     - etc/systemd/system/isuconquest.nodejs.service
     - etc/systemd/system/isuconquest.ruby.service
     - etc/systemd/system/isuconquest.rust.service
-    - etc/systemd/system/isuconquest.perl.service
 
 - name: Remove nginx default
   become: true
@@ -100,20 +99,6 @@
   shell:
     cmd: /home/isucon/.x npm install
     chdir: /home/isucon/webapp/node
-
-- name: Change /home/isucon/local/perl/bin/cpm permission
-  become: true
-  become_user: isucon
-  file:
-    path: /home/isucon/local/perl/bin/cpm
-    mode: 0755
-
-- name: cpm install for perl application
-  become: true
-  become_user: isucon
-  shell:
-    cmd: /home/isucon/.x cpm install
-    chdir: /home/isucon/webapp/perl
 
 - name: bundle install for ruby application
   become: true

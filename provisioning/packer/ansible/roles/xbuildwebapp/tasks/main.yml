@@ -28,26 +28,6 @@
     group: isucon
     recurse: true
 
-- name: Install Perl
-  become: true
-  shell:
-    cmd: /opt/xbuild/perl-install 5.36.0 /home/isucon/local/perl -- -Duselongdouble -j $(nproc)
-
-- name: Change owner of Perl
-  become: true
-  file:
-    path: /home/isucon/local/perl
-    state: directory
-    owner: isucon
-    group: isucon
-    recurse: true
-
-- name: Install cpm for Perl
-  become: true
-  become_user: isucon
-  shell: |
-    curl -fsSL https://raw.githubusercontent.com/skaji/cpm/main/cpm > /home/isucon/local/perl/bin/cpm
-
 - name: Install Ruby
   become: true
   shell:
